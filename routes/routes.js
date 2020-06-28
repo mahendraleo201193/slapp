@@ -44,6 +44,7 @@ module.exports = app => {
       // Student Question Map API
       router.post("/studentQuestionMap/",studentQuestionMap.create);
       router.get("/studentQuestionMap/:username/:classId",studentQuestionMap.findOne);
+      router.put("/studentQuestionMap/:username/:classId",studentQuestionMap.update);
 
 
       app.use('/', router);
