@@ -107,7 +107,7 @@
                            <b>${i+1}. ${questionText}</b>
                            </br>
                            <b>Answer :  </b>
-                           <input id="answer" type="text" name="answer" placeholder="" required>
+                           <input id="answer" type="text" name=${questionId} placeholder="" required>
                         `);
 
                     }
@@ -115,13 +115,33 @@
                             <input type="submit">
                     `);
                     $("#questionForm").submit(function(event) {
+                            var respArray = [];
                             event.preventDefault();
                             var form = $(this);
-                            var formData = form.serialize();
-                            $('#questionForm *').filter(':input').each(function(index,value){
+                            var formData = form.serializeArray();
+                            /*$('#questionForm *').filter(':input').each(function(index,value){
                                 alert(value);
+                            });*/
+                            for(var i =0; i< formData.length; i++){
+                                var respJson = {};
+                                respJson["questionId"]=formData[i].name;
+                                respJson["answer"]=formData[i].value;
+                                respJson["active"]=false;
+                                respArray.push(respJson);
+                            }
+                            //alert(respArray);
+                            $.ajax({
+                                type: "PUT",
+                                url: '/studentQuestionMap/'+username+'/'+classId,
+                                data: {"questions": JSON.stringify(respArray)},
+                                dataType: "json",
+                                success: function(data, status, xhr){
+                                    window.location.href = "/home"
+                                },
+                                error: function(jqXHR, textStatus, errorThrown){
+                                    alert(jqXHR.responseText);
+                               }
                             });
-                            alert(formData);
                     });
                 },
                 error: function(jqXHR, textStatus, errorThrown){
