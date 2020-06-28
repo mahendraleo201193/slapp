@@ -49,3 +49,72 @@ exports.create = (req, res) => {
         });
       });
   };
+
+  exports.update = (req, res) => {
+    console.log("Inside Update !!");
+    console.log(JSON.parse(req.body.questions));
+    const studentUsername = req.params.username;
+    const classId = req.params.classId;
+  
+      var data = JSON.parse(req.body.questions);
+      var count = 0;
+      for(var i=0; i< data.length;i++){
+          //console.log(data[i]);
+          //console.log(i);
+          StudentQuestionMap.update(data[i], {
+            where: { 
+              studentUsername: studentUsername,
+              classId: classId,
+              questionId: data[i].questionId
+             }
+          })
+            .then(num => {
+              if (num == 1) {
+                if(count==data.length-1){
+                  res.send({
+                    message: "updated successfully."
+                  });
+                  return
+                }
+                count++;
+              } else {
+                res.status(500);
+                res.send({
+                  message: `Can't Update. ${num}`
+                });
+                return;
+              }
+            })
+            .catch(err => {
+              res.status(500).send({
+                message: err
+              });
+              return;
+            });
+      }
+
+      /*
+      StudentQuestionMap.update(req.body, {
+      where: { 
+        studentUsername: studentUsername,
+        classId: classId
+       }
+    })
+      .then(num => {
+        if (num == 1) {
+          res.send({
+            message: "updated successfully."
+          });
+        } else {
+          res.send({
+            message: `Can't Update.`
+          });
+        }
+      })
+      .catch(err => {
+        res.status(500).send({
+          message: err
+        });
+      });
+      */
+  };
