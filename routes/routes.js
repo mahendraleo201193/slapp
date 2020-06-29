@@ -1,7 +1,7 @@
 module.exports = app => {
     
     const loginController = require("../controllers/controller.login.js");
-    const authController = require("../controllers/controller.authentication.js");
+    const authController = require("../auth/AuthController.js");
     const homeController = require("../controllers/controller.home.js");
     const students = require("../controllers/controller.students.js");
     const gradeDetails = require("../controllers/controller.gradeDetails.js");
@@ -23,28 +23,28 @@ module.exports = app => {
           return res.redirect('/public/index.html');
       });
 
-      router.post("/students/",students.create);
+      router.post("/students/",authController.checkSignIn,students.create);
      
 
       router.post("/auth/",students.auth);
 
       // Grade APIs
-      router.post("/gradeDetails/",gradeDetails.create);
+      router.post("/gradeDetails/",authController.checkSignIn,gradeDetails.create);
 
       // Class API
-      router.post("/classDetails/",classDetails.create);
+      router.post("/classDetails/",authController.checkSignIn,classDetails.create);
 
       // Question API
-      router.post("/questionDetails/",questionDetails.create);
+      router.post("/questionDetails/",authController.checkSignIn,questionDetails.create);
 
       // Student Class Map API
-      router.post("/studentClassMap/",studentClassMap.create);
-      router.get("/studentClassMap/:username",studentClassMap.findOne);
+      router.post("/studentClassMap/",authController.checkSignIn,studentClassMap.create);
+      router.get("/studentClassMap/:username",authController.checkSignIn,studentClassMap.findOne);
 
       // Student Question Map API
-      router.post("/studentQuestionMap/",studentQuestionMap.create);
-      router.get("/studentQuestionMap/:username/:classId",studentQuestionMap.findOne);
-      router.put("/studentQuestionMap/:username/:classId",studentQuestionMap.update);
+      router.post("/studentQuestionMap/",authController.checkSignIn,studentQuestionMap.create);
+      router.get("/studentQuestionMap/:username/:classId",authController.checkSignIn,studentQuestionMap.findOne);
+      router.put("/studentQuestionMap/:username/:classId",authController.checkSignIn,studentQuestionMap.update);
 
 
       app.use('/', router);

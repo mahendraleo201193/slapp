@@ -75,7 +75,8 @@
                 }
             },
             error: function(jqXHR, textStatus, errorThrown){
-                    alert(jqXHR.responseText);
+                window.location.href = "/login"
+                    //alert(jqXHR.responseText);
             }
         });
         $("#logoutBtn").click(function(event) {
