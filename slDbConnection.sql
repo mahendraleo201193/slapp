@@ -34,3 +34,4 @@ ALTER TABLE `students` ADD PRIMARY KEY (`username`);
 ALTER TABLE `students` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 
 commit;
+commit;
